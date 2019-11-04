@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14868" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14824"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddNoteViewController" customModule="Notes" customModuleProvider="target">
+            <connections>
+                <outlet property="noteImageView" destination="Tvn-Jh-8JZ" id="AWe-nS-auJ"/>
+                <outlet property="noteTitleTextField" destination="0va-cG-aI7" id="arQ-2B-Vtf"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w2m-QV-200">
+                    <rect key="frame" x="20" y="48" width="120" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="Vgx-xy-pVl"/>
+                        <constraint firstAttribute="height" constant="28" id="oN8-jL-Dq8"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <state key="normal" title="Cancel">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="cancelButtonTapped:" destination="-1" eventType="touchUpInside" id="nIq-c8-Naw"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="MoY-oH-zpp">
+                    <rect key="frame" x="274" y="48" width="120" height="28"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="fKb-Pa-p2A"/>
+                        <constraint firstAttribute="width" constant="120" id="qm1-BH-rID"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="24"/>
+                    <state key="normal" title="Done">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </state>
+                    <connections>
+                        <action selector="doneButtonTapped:" destination="-1" eventType="touchUpInside" id="kM1-CR-G0f"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PKM-0m-LRS">
+                    <rect key="frame" x="0.0" y="84" width="414" height="4"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="4" id="Vy5-7R-wuq"/>
+                    </constraints>
+                </view>
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="textDacumentIcon" translatesAutoresizingMaskIntoConstraints="NO" id="Tvn-Jh-8JZ">
+                    <rect key="frame" x="147" y="128" width="120" height="140"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="120" id="NDG-m7-6j6"/>
+                        <constraint firstAttribute="height" constant="140" id="rfn-wY-r9C"/>
+                    </constraints>
+                </imageView>
+                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Note Title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="0va-cG-aI7">
+                    <rect key="frame" x="20" y="308" width="374" height="34"/>
+                    <color key="backgroundColor" red="0.50196078431372548" green="0.50196078431372548" blue="0.50196078431372548" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <textInputTraits key="textInputTraits"/>
+                </textField>
+            </subviews>
+            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="Tvn-Jh-8JZ" firstAttribute="top" secondItem="PKM-0m-LRS" secondAttribute="bottom" constant="40" id="4cb-09-XW7"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="MoY-oH-zpp" secondAttribute="trailing" constant="20" id="EEB-hh-e36"/>
+                <constraint firstItem="0va-cG-aI7" firstAttribute="top" secondItem="Tvn-Jh-8JZ" secondAttribute="bottom" constant="40" id="GmN-OW-HEq"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="PKM-0m-LRS" secondAttribute="trailing" id="P8v-w6-7xb"/>
+                <constraint firstItem="Tvn-Jh-8JZ" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="S5a-3F-kT2"/>
+                <constraint firstItem="PKM-0m-LRS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="Z4g-nF-qNK"/>
+                <constraint firstItem="PKM-0m-LRS" firstAttribute="top" secondItem="w2m-QV-200" secondAttribute="bottom" constant="8" id="f0m-fB-hUn"/>
+                <constraint firstItem="MoY-oH-zpp" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="4" id="f9G-Bi-NKO"/>
+                <constraint firstItem="w2m-QV-200" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="4" id="qTJ-dW-eI4"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="0va-cG-aI7" secondAttribute="trailing" constant="20" id="qzu-Cl-Tvp"/>
+                <constraint firstItem="0va-cG-aI7" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="szk-E8-vdB"/>
+                <constraint firstItem="w2m-QV-200" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="20" id="usa-0L-RQT"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <point key="canvasLocation" x="131.8840579710145" y="153.34821428571428"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="textDacumentIcon" width="512" height="512"/>
+    </resources>
+</document>
