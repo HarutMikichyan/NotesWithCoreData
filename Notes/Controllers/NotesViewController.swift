@@ -11,9 +11,11 @@ import UIKit
 class NotesViewController: UIViewController {
     
     @IBOutlet weak var footerView: UIView!
+    @IBOutlet weak var footerViewBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var notesCountLabel: UILabel!
     
     private var notes = [Note]()
+    private var originalFooterViewBottonConstraint: CGFloat = 0.0
     private let searchController = UISearchController(searchResultsController: nil)
     
     private let notesTableView: UITableView = {
@@ -28,6 +30,7 @@ class NotesViewController: UIViewController {
         setupSearchController()
         setupNotesTableView()
         fetchData()
+        keyboardAddObserver()
     }
     
     //MARK: - Actions
@@ -41,6 +44,22 @@ class NotesViewController: UIViewController {
         vc.modalPresentationStyle = .fullScreen
         vc.delegate = self
         present(vc, animated: true, completion: nil)
+    }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        if let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
+            footerViewBottomConstraint.constant = -keyboardSize.cgRectValue.height + view.safeAreaInsets.bottom
+            UIView.animate(withDuration: 1.0) {
+                self.view.layoutIfNeeded()
+            }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: Notification) {
+        footerViewBottomConstraint.constant = originalFooterViewBottonConstraint
+        UIView.animate(withDuration: 1.0) {
+            self.view.layoutIfNeeded()
+        }
     }
     
     //MARK: - Setup Methods
@@ -67,6 +86,17 @@ class NotesViewController: UIViewController {
             self.notesCountLabel.text = "\(self.notes.count) Notes"
             self.notesTableView.reloadData()
         }
+    }
+    
+    private func keyboardAddObserver() {
+        originalFooterViewBottonConstraint = footerViewBottomConstraint.constant
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
 

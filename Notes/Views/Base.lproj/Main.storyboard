@@ -78,6 +78,7 @@
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="footerView" destination="LPu-7e-HpW" id="GJ4-vf-ayJ"/>
+                        <outlet property="footerViewBottomConstraint" destination="Eem-lF-62J" id="zDZ-SJ-LfT"/>
                         <outlet property="notesCountLabel" destination="Z0W-6P-VlE" id="8eb-TA-5es"/>
                     </connections>
                 </viewController>
