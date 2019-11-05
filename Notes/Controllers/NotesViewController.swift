@@ -12,7 +12,6 @@ class NotesViewController: UIViewController {
     
     @IBOutlet weak var footerView: UIView!
     @IBOutlet weak var footerViewBottomConstraint: NSLayoutConstraint!
-    @IBOutlet weak var notesCountLabel: UILabel!
     
     private var notes = [Note]()
     private var originalFooterViewBottonConstraint: CGFloat = 0.0
@@ -83,7 +82,6 @@ class NotesViewController: UIViewController {
         UIApplication.dataManager.getNote { [weak self] (notes) in
             guard let self = self, let notes = notes else { return }
             self.notes = notes
-            self.notesCountLabel.text = "\(self.notes.count) Notes"
             self.notesTableView.reloadData()
         }
     }
@@ -105,7 +103,6 @@ extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
         if editingStyle == .delete {
             UIApplication.dataManager.deleteObject(id: notes[indexPath.row].objectID)
             notes.remove(at: indexPath.row)
-            notesCountLabel.text = "\(notes.count) Notes"
             tableView.reloadData()
         }
     }
@@ -149,7 +146,6 @@ extension NotesViewController: UISearchBarDelegate {
             UIApplication.dataManager.searchNotes(prefixText: searchText) { [weak self] (notes) in
                 guard let self = self, let notes = notes else { return }
                 self.notes = notes
-                self.notesCountLabel.text = "\(self.notes.count) Notes"
                 self.notesTableView.reloadData()
             }
         } else {

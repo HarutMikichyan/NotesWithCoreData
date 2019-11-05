@@ -29,9 +29,9 @@ class AddNoteViewController: UIViewController {
     }
     
     @IBAction func doneButtonTapped(_ sender: UIButton) {
-        if noteTitleTextField.text == "" {
+        if noteTitleTextField.text!.isEmpty {
             noteTitleTextField.layer.borderWidth = 2
-            noteTitleTextField.layer.borderColor = UIColor.red.cgColor
+            noteTitleTextField.layer.borderColor = UIColor.white.cgColor
         } else {
             delegate?.getNewNoteData(noteTitleTextField.text!)
             dismiss(animated: true, completion: nil)
