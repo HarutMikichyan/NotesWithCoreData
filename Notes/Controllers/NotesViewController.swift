@@ -23,6 +23,7 @@ class NotesViewController: UIViewController {
         return tv
     }()
     
+    //MARK: - Life Cycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Notes"
@@ -32,11 +33,14 @@ class NotesViewController: UIViewController {
         keyboardAddObserver()
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+    
     //MARK: - Actions
     @IBAction func editNotesButtonTapped(_ sender: UIButton) {
         notesTableView.isEditing = !notesTableView.isEditing
     }
-    
     
     @IBAction func addNoteButtonTapped(_ sender: UIButton) {
         let vc = AddNoteViewController()
@@ -45,7 +49,22 @@ class NotesViewController: UIViewController {
         present(vc, animated: true, completion: nil)
     }
     
-    @objc func keyboardWillShow(notification: Notification) {
+    private func fetchData() {
+        UIApplication.dataManager.getNotes { [weak self] (notes) in
+            guard let self = self, let notes = notes else { return }
+            self.notes = notes
+            self.notesTableView.reloadData()
+        }
+    }
+    
+    //MARK: - Notification Center Methods
+    private func keyboardAddObserver() {
+        originalFooterViewBottonConstraint = footerViewBottomConstraint.constant
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    @objc private func keyboardWillShow(notification: Notification) {
         if let keyboardSize = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
             footerViewBottomConstraint.constant = -keyboardSize.cgRectValue.height + view.safeAreaInsets.bottom
             UIView.animate(withDuration: 1.0) {
@@ -54,18 +73,19 @@ class NotesViewController: UIViewController {
         }
     }
     
-    @objc func keyboardWillHide(notification: Notification) {
+    @objc private func keyboardWillHide(notification: Notification) {
         footerViewBottomConstraint.constant = originalFooterViewBottonConstraint
         UIView.animate(withDuration: 1.0) {
             self.view.layoutIfNeeded()
         }
+        fetchData()
     }
     
     //MARK: - Setup Methods
     private func setupSearchController() {
+        searchController.obscuresBackgroundDuringPresentation = false
         navigationItem.searchController = searchController
         searchController.searchBar.delegate = self
-        searchController.obscuresBackgroundDuringPresentation = false
     }
     
     private func setupNotesTableView() {
@@ -77,34 +97,14 @@ class NotesViewController: UIViewController {
                               left: view.leftAnchor, leftPad: 0, right: view.rightAnchor, rightPad: 0,
                               height: 0, width: 0)
     }
-    
-    private func fetchData() {
-        UIApplication.dataManager.getNote { [weak self] (notes) in
-            guard let self = self, let notes = notes else { return }
-            self.notes = notes
-            self.notesTableView.reloadData()
-        }
-    }
-    
-    private func keyboardAddObserver() {
-        originalFooterViewBottonConstraint = footerViewBottomConstraint.constant
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
-    }
 }
 
 extension NotesViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete {
-            UIApplication.dataManager.deleteObject(id: notes[indexPath.row].objectID)
-            notes.remove(at: indexPath.row)
-            tableView.reloadData()
-        }
+        guard editingStyle == .delete else { return }
+        UIApplication.dataManager.deleteObject(id: notes[indexPath.row].objectID)
+        notes.remove(at: indexPath.row)
+        tableView.reloadData()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -142,14 +142,14 @@ extension NotesViewController: AddNoteViewControllerDelegate {
 
 extension NotesViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        if searchText != "" {
+        if searchText.isEmpty {
+            fetchData()
+        } else {
             UIApplication.dataManager.searchNotes(prefixText: searchText) { [weak self] (notes) in
                 guard let self = self, let notes = notes else { return }
                 self.notes = notes
                 self.notesTableView.reloadData()
             }
-        } else {
-            fetchData()
         }
     }
 }

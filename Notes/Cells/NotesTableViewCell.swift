@@ -13,8 +13,4 @@ class NotesTableViewCell: UITableViewCell {
     
     @IBOutlet weak var noteImageView: UIImageView!
     @IBOutlet weak var noteTitle: UILabel!
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-    }
 }

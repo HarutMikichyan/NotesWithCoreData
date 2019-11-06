@@ -17,7 +17,7 @@ final class DataManager {
     }
     
     //MARK: - Public Interface
-    func getNote(completion: @escaping ([Note]?) -> Void) {
+    func getNotes(completion: @escaping ([Note]?) -> Void) {
         completion(featchNote())
     }
     
